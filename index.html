@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Invitación al cumpleaños de Jackie, viernes 15 de mayo de 2026 en Salón de Eventos, Colonia San Jorge, Zona 11, Guatemala.">
+<meta name="theme-color" content="#7B1553">
+<title>¡Jackie Cumple Años!</title>
+<link rel="icon" href="uploads/photo-1777500927883.png">
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Fraunces:wght@400;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --magenta: #7B1553;
+    --magenta-dark: #4A0D33;
+    --gold: #F0B429;
+    --gold-dark: #C98A10;
+    --tropical-green: #1E6B3C;
+    --leaf-green: #2D8A4E;
+    --cream: #FFF8EE;
+    --coral: #E8472A;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Space Grotesk', sans-serif;
+    background:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px),
+      radial-gradient(ellipse at 50% 0%, #9B1A62 0%, #6B1040 40%, #3D0825 100%);
+    background-size: 34px 34px, 34px 34px, auto;
+    min-height: 100vh;
+    overflow-x: hidden;
+    color: var(--cream);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  a, button { -webkit-tap-highlight-color: transparent; }
+  a:focus-visible {
+    outline: 3px solid rgba(255,229,102,0.9);
+    outline-offset: 4px;
+  }
+
+  /* ── FLOATING PARTICLES ── */
+  .particles {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .note, .petal {
+    position: absolute;
+    animation: floatUp linear infinite;
+    opacity: 0;
+  }
+  .note { font-size: 1.4rem; color: var(--gold); filter: drop-shadow(0 0 6px rgba(240,180,41,0.7)); }
+  .petal { width: 12px; height: 12px; border-radius: 50% 0 50% 0; }
+
+  @keyframes floatUp {
+    0%   { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+    10%  { opacity: 0.8; }
+    90%  { opacity: 0.6; }
+    100% { transform: translateY(-10vh) rotate(720deg); opacity: 0; }
+  }
+
+  /* ── BUNTING ── */
+  .bunting-wrap {
+    position: relative;
+    width: 100%;
+    text-align: center;
+    padding-top: 20px;
+    z-index: 2;
+  }
+  .bunting {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 0;
+    padding: 0 10px;
+    flex-wrap: nowrap;
+  }
+  .flag {
+    width: 0;
+    height: 0;
+    border-left: 16px solid transparent;
+    border-right: 16px solid transparent;
+    border-top: 26px solid;
+    margin: 0 2px;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+  }
+  .bunting-line {
+    position: absolute;
+    top: 26px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(255,220,100,0.6) 20%, rgba(255,220,100,0.6) 80%, transparent);
+  }
+
+  /* ── LIGHTS ── */
+  .lights {
+    display: flex;
+    justify-content: center;
+    gap: 22px;
+    margin-top: 6px;
+    padding-bottom: 4px;
+  }
+  .bulb {
+    width: 10px;
+    height: 14px;
+    border-radius: 50% 50% 40% 40%;
+    animation: glow 1.8s ease-in-out infinite alternate;
+    box-shadow: 0 0 8px 4px currentColor;
+  }
+  @keyframes glow {
+    from { opacity: 0.5; }
+    to   { opacity: 1; }
+  }
+
+  /* ── INVITATION LABEL ── */
+  .invite-label {
+    font-family: 'Dancing Script', cursive;
+    font-size: clamp(1.6rem, 5vw, 2.4rem);
+    color: var(--cream);
+    text-shadow: 0 2px 12px rgba(0,0,0,0.5), 0 0 30px rgba(240,180,41,0.3);
+    text-align: center;
+    margin-top: 10px;
+    letter-spacing: 0;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 20px 0;
+    z-index: 2;
+  }
+
+  /* ── HERO DECOR ── */
+  .hero-decor {
+    position: absolute;
+    top: 72px;
+    width: 86px;
+    height: 86px;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.94;
+  }
+  .hero-decor-left { left: -4px; }
+  .hero-decor-right { right: -4px; transform: scaleX(-1); }
+  .hero-decor::before,
+  .hero-decor::after {
+    content: "";
+    position: absolute;
+    border-radius: 999px;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.25));
+  }
+  .hero-decor::before {
+    width: 70px;
+    height: 38px;
+    left: 0;
+    bottom: 7px;
+    background:
+      radial-gradient(ellipse at 30% 55%, #2D8A4E 0 32%, transparent 33%),
+      radial-gradient(ellipse at 62% 42%, #1E6B3C 0 36%, transparent 37%);
+    transform: rotate(-25deg);
+  }
+  .hero-decor::after {
+    width: 66px;
+    height: 66px;
+    right: 0;
+    top: 0;
+    background:
+      radial-gradient(circle at 50% 50%, #F5D020 0 8%, transparent 9%),
+      radial-gradient(ellipse at 50% 16%, #E8472A 0 16%, transparent 17%),
+      radial-gradient(ellipse at 84% 50%, #E8472A 0 16%, transparent 17%),
+      radial-gradient(ellipse at 50% 84%, #D43A8E 0 16%, transparent 17%),
+      radial-gradient(ellipse at 16% 50%, #FF6B9D 0 16%, transparent 17%);
+  }
+
+  .photo-frame {
+    position: relative;
+    width: min(280px, 72vw);
+    height: min(320px, 82vw);
+    margin-top: 10px;
+    z-index: 3;
+  }
+  .photo-glow {
+    position: absolute;
+    inset: -20px;
+    background: radial-gradient(ellipse, rgba(240,180,41,0.35) 0%, transparent 70%);
+    border-radius: 50%;
+    animation: pulseGlow 3s ease-in-out infinite;
+  }
+  @keyframes pulseGlow {
+    0%, 100% { transform: scale(1); opacity: 0.7; }
+    50% { transform: scale(1.08); opacity: 1; }
+  }
+  .photo-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    border-radius: 50% 50% 48% 48%;
+    border: 4px solid rgba(240,180,41,0.7);
+    box-shadow: 0 0 30px rgba(240,180,41,0.4), 0 8px 40px rgba(0,0,0,0.6);
+    position: relative;
+    z-index: 1;
+    background: rgba(255,255,255,0.08);
+  }
+
+  /* ── NAME BLOCK ── */
+  .name-block {
+    text-align: center;
+    margin-top: 16px;
+    z-index: 3;
+    position: relative;
+  }
+  .name-main {
+    font-family: 'Dancing Script', cursive;
+    font-size: clamp(4.2rem, 18vw, 7.4rem);
+    background: linear-gradient(160deg, #FFE566 0%, #F0B429 40%, #E07B10 80%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
+    text-shadow: none;
+    filter: drop-shadow(0 3px 8px rgba(0,0,0,0.5));
+    display: block;
+  }
+  .name-sub {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(1.1rem, 4vw, 1.6rem);
+    color: var(--cream);
+    letter-spacing: 0;
+    margin-top: -4px;
+  }
+
+  /* ── RIBBON SUBTITLE ── */
+  .ribbon-wrap {
+    position: relative;
+    margin: 14px auto 12px;
+    width: fit-content;
+    max-width: 90vw;
+    z-index: 3;
+  }
+  .ribbon {
+    background: linear-gradient(90deg, #7B1553, #A01E6A, #7B1553);
+    border: 2px solid rgba(240,180,41,0.5);
+    padding: 10px 28px;
+    text-align: center;
+    clip-path: polygon(12px 0%, calc(100% - 12px) 0%, 100% 50%, calc(100% - 12px) 100%, 12px 100%, 0% 50%);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  }
+  .ribbon p {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(0.9rem, 3.5vw, 1.15rem);
+    color: var(--cream);
+    line-height: 1.5;
+  }
+  .ribbon strong {
+    color: var(--gold);
+  }
+
+  .event-summary {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin: 2px auto 10px;
+    position: relative;
+    z-index: 3;
+  }
+  .summary-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 34px;
+    padding: 7px 12px;
+    border-radius: 999px;
+    background: rgba(255,248,238,0.09);
+    border: 1px solid rgba(240,180,41,0.28);
+    color: var(--cream);
+    font-size: 0.82rem;
+    font-weight: 700;
+    box-shadow: 0 3px 14px rgba(0,0,0,0.22);
+  }
+
+  .celebration-accent {
+    position: relative;
+    width: min(360px, 88vw);
+    height: 82px;
+    margin: 4px auto 0;
+    z-index: 3;
+    overflow: hidden;
+  }
+  .celebration-accent::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 38px;
+    width: 260px;
+    height: 1px;
+    transform: translateX(-50%);
+    background: linear-gradient(90deg, transparent, rgba(240,180,41,0.55), transparent);
+  }
+  .music-badge {
+    position: absolute;
+    top: 15px;
+    left: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    transform: translateX(-50%);
+    background:
+      radial-gradient(circle at 35% 30%, rgba(255,255,255,0.2), transparent 28%),
+      linear-gradient(145deg, rgba(240,180,41,0.95), rgba(224,123,16,0.9));
+    color: #5A0D39;
+    font-size: 1.9rem;
+    box-shadow: 0 10px 28px rgba(0,0,0,0.35), 0 0 24px rgba(240,180,41,0.34);
+  }
+  .accent-flower {
+    position: absolute;
+    top: 27px;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at 50% 50%, #F5D020 0 13%, transparent 14%),
+      radial-gradient(ellipse at 50% 10%, #E8472A 0 22%, transparent 23%),
+      radial-gradient(ellipse at 90% 50%, #D43A8E 0 22%, transparent 23%),
+      radial-gradient(ellipse at 50% 90%, #FF6B9D 0 22%, transparent 23%),
+      radial-gradient(ellipse at 10% 50%, #E84772 0 22%, transparent 23%);
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.28));
+  }
+  .accent-flower-left { left: 48px; transform: rotate(-12deg); }
+  .accent-flower-right { right: 48px; transform: rotate(12deg); }
+
+  /* ── SECTION CARD ── */
+  .section-card {
+    background: rgba(75, 10, 50, 0.55);
+    border: 1px solid rgba(240,180,41,0.25);
+    border-radius: 16px;
+    padding: 28px 24px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    position: relative;
+    z-index: 2;
+  }
+  .section-title {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(1.2rem, 4vw, 1.5rem);
+    color: var(--gold);
+    text-align: center;
+    margin-bottom: 18px;
+    letter-spacing: 0;
+  }
+  .section-title::before,
+  .section-title::after {
+    content: ' ✦ ';
+    opacity: 0.6;
+    font-size: 0.7em;
+  }
+
+  /* ── DETAILS GRID ── */
+  .details-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .detail-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 12px 14px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 12px;
+    border: 1px solid rgba(240,180,41,0.15);
+  }
+  .detail-icon {
+    font-size: 1.4rem;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .detail-content {}
+  .detail-content { min-width: 0; }
+  .detail-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--gold);
+    opacity: 0.8;
+    font-weight: 600;
+  }
+  .detail-value {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(0.95rem, 3vw, 1.1rem);
+    color: var(--cream);
+    line-height: 1.4;
+    margin-top: 2px;
+  }
+  .detail-note {
+    display: block;
+    color: rgba(255,248,238,0.72);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.82rem;
+    margin-top: 3px;
+  }
+
+  /* ── CODE BOX ── */
+  .code-box {
+    text-align: center;
+    padding: 16px;
+    background: rgba(240,180,41,0.12);
+    border: 2px solid rgba(240,180,41,0.4);
+    border-radius: 14px;
+    margin-top: 8px;
+  }
+  .code-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--gold);
+    opacity: 0.8;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .code-value {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2.4rem;
+    color: var(--gold);
+    text-shadow: 0 0 20px rgba(240,180,41,0.5);
+    letter-spacing: 0;
+  }
+
+  /* ── ACTION LINKS ── */
+  .action-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-top: 16px;
+  }
+  .action-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 11px 16px;
+    border-radius: 999px;
+    border: 1px solid rgba(240,180,41,0.36);
+    background: rgba(255,248,238,0.08);
+    color: var(--gold);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 700;
+    transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease;
+  }
+  .action-link:hover {
+    transform: translateY(-2px);
+    background: rgba(240,180,41,0.14);
+    border-color: rgba(240,180,41,0.62);
+  }
+
+  /* ── MAP ── */
+  .map-wrap {
+    border-radius: 16px;
+    overflow: hidden;
+    border: 2px solid rgba(240,180,41,0.3);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+    height: 260px;
+  }
+  .map-wrap iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    filter: saturate(0.8) hue-rotate(320deg) brightness(0.9);
+  }
+  .map-link {
+    margin-top: 12px;
+  }
+
+  /* ── DRINKS ── */
+  .drinks-note {
+    text-align: center;
+    padding: 16px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 14px;
+    border: 1px dashed rgba(240,180,41,0.3);
+  }
+  .drinks-icon { font-size: 2rem; margin-bottom: 6px; }
+  .drinks-text {
+    font-family: 'Fraunces', serif;
+    font-size: 1rem;
+    color: var(--cream);
+    line-height: 1.5;
+  }
+  .drinks-text em { color: var(--gold); font-style: normal; font-weight: 600; }
+
+  /* ── RSVP ── */
+  .rsvp-section {
+    text-align: center;
+    padding: 32px 20px;
+    position: relative;
+    z-index: 2;
+  }
+  .rsvp-text {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(1rem, 3.5vw, 1.2rem);
+    color: var(--cream);
+    opacity: 0.9;
+    margin-bottom: 18px;
+    line-height: 1.5;
+  }
+  .rsvp-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: linear-gradient(135deg, #25D366, #128C7E);
+    color: white;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 14px 28px;
+    border-radius: 50px;
+    text-decoration: none;
+    box-shadow: 0 6px 24px rgba(37,211,102,0.4), 0 2px 8px rgba(0,0,0,0.3);
+    transition: transform 0.2s, box-shadow 0.2s;
+    letter-spacing: 0.02em;
+  }
+  .rsvp-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(37,211,102,0.5);
+  }
+  .rsvp-btn span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    font-size: 1.25rem;
+    line-height: 1;
+  }
+
+  /* ── FOOTER ── */
+  .footer-msg {
+    text-align: center;
+    padding: 24px 20px 40px;
+    position: relative;
+    z-index: 2;
+  }
+  .footer-script {
+    font-family: 'Dancing Script', cursive;
+    font-size: clamp(1.2rem, 5vw, 1.7rem);
+    color: var(--gold);
+    line-height: 1.6;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+  }
+
+  /* ── LAYOUT CONTAINER ── */
+  .page-inner {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 0 16px 0;
+    position: relative;
+    z-index: 2;
+  }
+  .stack { display: flex; flex-direction: column; gap: 16px; padding-bottom: 8px; }
+
+  /* ── HIBISCUS DIVIDER ── */
+  .divider {
+    text-align: center;
+    font-size: 1.3rem;
+    opacity: 0.5;
+    margin: 4px 0;
+    letter-spacing: 0;
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  @media (min-width: 560px) {
+    .page-inner { max-width: 520px; }
+    .action-row { grid-template-columns: 1fr 1fr; }
+    .photo-frame {
+      width: 300px;
+      height: 342px;
+    }
+  }
+
+  @media (max-width: 360px) {
+    .section-card { padding: 24px 18px; }
+    .detail-row { padding: 11px 12px; }
+    .rsvp-btn { width: 100%; justify-content: center; padding-inline: 18px; }
+    .hero-decor {
+      top: 82px;
+      width: 72px;
+      height: 72px;
+    }
+    .hero-decor-left { left: -18px; }
+    .hero-decor-right { right: -18px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+    .particles { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Floating particles -->
+<div class="particles" id="particles"></div>
+
+<!-- BUNTING + LIGHTS -->
+<div class="page-inner">
+  <div class="bunting-wrap">
+    <div class="bunting-line"></div>
+    <div class="bunting" id="bunting"></div>
+    <div class="lights" id="lights"></div>
+  </div>
+
+  <!-- Invite label -->
+  <p class="invite-label">¡Estás invitado!</p>
+
+  <!-- HERO -->
+  <main class="hero" aria-labelledby="titulo-invitacion">
+    <span class="hero-decor hero-decor-left" aria-hidden="true"></span>
+    <span class="hero-decor hero-decor-right" aria-hidden="true"></span>
+
+    <!-- Photo -->
+    <div class="photo-frame">
+      <div class="photo-glow"></div>
+      <img src="uploads/photo-1777500927883.png" alt="Jackie">
+    </div>
+
+    <!-- Name -->
+    <div class="name-block">
+      <h1 id="titulo-invitacion" class="name-main">Jackie</h1>
+      <p class="name-sub">cumple años 🎉</p>
+    </div>
+
+    <!-- Ribbon -->
+    <div class="ribbon-wrap">
+      <div class="ribbon">
+        <p>y deseamos celebrar la vida…</p>
+        <p><strong>¡Acompáñanos!</strong></p>
+      </div>
+    </div>
+
+    <div class="event-summary" aria-label="Resumen del evento">
+      <span class="summary-chip">📅 Viernes 15 de mayo</span>
+      <span class="summary-chip">🕖 7:00 p.m.</span>
+      <span class="summary-chip">📍 Zona 11</span>
+    </div>
+
+    <div class="celebration-accent" aria-hidden="true">
+      <span class="accent-flower accent-flower-left"></span>
+      <span class="music-badge">♪</span>
+      <span class="accent-flower accent-flower-right"></span>
+    </div>
+  </main><!-- /hero -->
+
+  <!-- DIVIDER -->
+  <div class="divider">🌺 🌸 🌺</div>
+
+  <!-- DETAILS CARD -->
+  <div class="stack">
+    <section class="section-card" aria-labelledby="detalles-evento">
+      <h2 id="detalles-evento" class="section-title">Detalles del evento</h2>
+      <div class="details-grid">
+        <div class="detail-row">
+          <span class="detail-icon" aria-hidden="true">📅</span>
+          <div class="detail-content">
+            <p class="detail-label">Fecha</p>
+            <p class="detail-value">Viernes, 15 de mayo de 2026</p>
+          </div>
+        </div>
+        <div class="detail-row">
+          <span class="detail-icon" aria-hidden="true">🕖</span>
+          <div class="detail-content">
+            <p class="detail-label">Hora</p>
+            <p class="detail-value">7:00 p.m. — 12:00 a.m.</p>
+          </div>
+        </div>
+        <div class="detail-row">
+          <span class="detail-icon" aria-hidden="true">📍</span>
+          <div class="detail-content">
+            <p class="detail-label">Lugar</p>
+            <p class="detail-value">Salón de Eventos<br>Colonia San Jorge, Zona 11<span class="detail-note">Guatemala</span></p>
+          </div>
+        </div>
+        <div class="detail-row">
+          <span class="detail-icon" aria-hidden="true">👗</span>
+          <div class="detail-content">
+            <p class="detail-label">Vestimenta</p>
+            <p class="detail-value">Casual</p>
+          </div>
+        </div>
+      </div>
+      <div class="code-box" style="margin-top:16px;">
+        <p class="code-label">Código de entrada</p>
+        <p class="code-value">XX</p>
+      </div>
+      <div class="action-row">
+        <a class="action-link" target="_blank" rel="noopener" href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Cumplea%C3%B1os%20de%20Jackie&dates=20260516T010000Z/20260516T060000Z&details=%C2%A1Ven%20a%20celebrar%2C%20bailar%20y%20brindar%20con%20Jackie!&location=Sal%C3%B3n%20de%20Eventos%2C%20Colonia%20San%20Jorge%2C%20Zona%2011%2C%20Guatemala">
+          <span aria-hidden="true">＋</span> Agendar
+        </a>
+        <a class="action-link" target="_blank" rel="noopener" href="https://maps.google.com/?q=Salon+de+Eventos+Colonia+San+Jorge+Zona+11+Guatemala">
+          <span aria-hidden="true">⌖</span> Ver ruta
+        </a>
+      </div>
+    </section>
+
+    <!-- DRINKS -->
+    <section class="section-card" aria-labelledby="bebidas">
+      <h2 id="bebidas" class="section-title">Bebidas</h2>
+      <div class="drinks-note">
+        <div class="drinks-icon" aria-hidden="true">🍻</div>
+        <p class="drinks-text">Las bebidas son <em>por cuenta de cada quien</em>.<br>¡Trae lo que más disfrutas!</p>
+      </div>
+    </section>
+
+    <!-- MAP -->
+    <section class="section-card" aria-labelledby="ubicacion">
+      <h2 id="ubicacion" class="section-title">Ubicación</h2>
+      <div class="map-wrap">
+        <iframe
+          src="https://www.openstreetmap.org/export/embed.html?bbox=-90.56289%2C14.61115%2C-90.55089%2C14.62315&layer=mapnik&marker=14.61715%2C-90.55689"
+          allowfullscreen
+          loading="eager"
+          title="Ubicación del evento"
+        ></iframe>
+      </div>
+      <a
+        href="https://maps.google.com/?q=Salon+de+Eventos+Colonia+San+Jorge+Zona+11+Guatemala"
+        target="_blank"
+        rel="noopener"
+        class="action-link map-link"
+      ><span aria-hidden="true">⌖</span> Abrir en Google Maps</a>
+    </section>
+  </div><!-- /stack -->
+
+  <!-- RSVP -->
+  <section class="rsvp-section" aria-labelledby="confirmar-asistencia">
+    <h2 id="confirmar-asistencia" class="sr-only">Confirmar asistencia</h2>
+    <p class="rsvp-text">
+      Tu presencia hará este momento<br>aún más especial. ¡Confirma tu asistencia!
+    </p>
+    <a
+      href="https://wa.me/50256164482?text=%C2%A1Hola%21%20Confirmo%20mi%20asistencia%20al%20cumplea%C3%B1os%20de%20Jackie%20el%20viernes%2015%20de%20mayo%20%F0%9F%8E%89"
+      target="_blank"
+      rel="noopener"
+      class="rsvp-btn"
+    >
+      <span aria-hidden="true">💬</span>
+      Confirmar por WhatsApp
+    </a>
+  </section>
+
+  <!-- FOOTER -->
+  <div class="footer-msg">
+    <p class="footer-script">¡Ven a celebrar, bailar<br>y brindar con Jackie! 💃</p>
+  </div>
+</div><!-- /page-inner -->
+
+<script>
+// ── BUNTING FLAGS ──
+const flagColors = ['#E8472A','#F0B429','#25A244','#9B59B6','#E84772','#2980B9','#E8472A','#F0B429','#25A244'];
+const bunting = document.getElementById('bunting');
+flagColors.forEach(c => {
+  const d = document.createElement('div');
+  d.className = 'flag';
+  d.style.borderTopColor = c;
+  bunting.appendChild(d);
+});
+
+// ── LIGHTS ──
+const bulbColors = ['#FFE566','#FF6B6B','#6BFFA0','#66B2FF','#FF6BFF','#FFE566','#FF6B6B','#6BFFA0','#66B2FF'];
+const lights = document.getElementById('lights');
+bulbColors.forEach((c, i) => {
+  const b = document.createElement('div');
+  b.className = 'bulb';
+  b.style.color = c;
+  b.style.backgroundColor = c;
+  b.style.animationDelay = (i * 0.22) + 's';
+  lights.appendChild(b);
+});
+
+// ── FLOATING PARTICLES ──
+const container = document.getElementById('particles');
+const notes = ['♩','♪','♫','♬'];
+const petalColors = ['#E8472A','#D43A8E','#F0B429','#FF6B9D','#25A244'];
+
+function spawnParticle() {
+  const isNote = Math.random() > 0.4;
+  const el = document.createElement('div');
+  el.className = isNote ? 'note' : 'petal';
+  if (isNote) {
+    el.textContent = notes[Math.floor(Math.random() * notes.length)];
+    el.style.fontSize = (0.8 + Math.random() * 0.8) + 'rem';
+  } else {
+    el.style.backgroundColor = petalColors[Math.floor(Math.random() * petalColors.length)];
+    const s = 6 + Math.random() * 10;
+    el.style.width = s + 'px';
+    el.style.height = s + 'px';
+    el.style.borderRadius = Math.random() > 0.5 ? '50% 0 50% 0' : '50%';
+  }
+  el.style.left = (Math.random() * 100) + 'vw';
+  const duration = 6 + Math.random() * 8;
+  el.style.animationDuration = duration + 's';
+  el.style.animationDelay = (Math.random() * 4) + 's';
+  container.appendChild(el);
+  setTimeout(() => el.remove(), (duration + 4) * 1000);
+}
+
+// Spawn particles
+for (let i = 0; i < 18; i++) spawnParticle();
+setInterval(spawnParticle, 800);
+</script>
+</body>
+</html>

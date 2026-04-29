@@ -1,0 +1,6 @@
+.DS_Store
+.playwright-cli/
+.vercel/
+.vercel-deploy/
+output/
+*.tgz
