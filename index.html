@@ -187,35 +187,109 @@
       radial-gradient(ellipse at 16% 50%, #FF6B9D 0 16%, transparent 17%);
   }
 
-  .photo-frame {
+  /* ── HERO STAGE FULL-BLEED ── */
+  .hero-stage {
     position: relative;
-    width: min(280px, 72vw);
-    height: min(320px, 82vw);
-    margin-top: 10px;
-    z-index: 3;
+    width: 100%;
+    /* Espacio de scroll extra para que el video pueda scrubear */
+    min-height: 200vh;
+    background: #000;
+    z-index: 1;
   }
-  .photo-glow {
-    position: absolute;
-    inset: -20px;
-    background: radial-gradient(ellipse, rgba(240,180,41,0.35) 0%, transparent 70%);
-    border-radius: 50%;
-    animation: pulseGlow 3s ease-in-out infinite;
+  .hero-video-wrap {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    height: 100vh;
+    /* Altura dinámica para iOS Safari (evita el "bouncing" con barra del browser) */
+    height: 100svh;
+    overflow: hidden;
+    background: #000;
   }
-  @keyframes pulseGlow {
-    0%, 100% { transform: scale(1); opacity: 0.7; }
-    50% { transform: scale(1.08); opacity: 1; }
-  }
-  .photo-frame img {
+  .hero-video {
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    object-position: top center;
-    border-radius: 50% 50% 48% 48%;
-    border: 4px solid rgba(240,180,41,0.7);
-    box-shadow: 0 0 30px rgba(240,180,41,0.4), 0 8px 40px rgba(0,0,0,0.6);
+    object-fit: cover;        /* corta los lados en mobile portrait */
+    object-position: center center;
+    display: block;
+    pointer-events: none;
+    background: #000;
+  }
+  /* Viñeta sutil en bordes para dar profundidad */
+  .hero-vignette {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.45) 100%),
+      linear-gradient(180deg, rgba(0,0,0,0.25) 0%, transparent 18%, transparent 75%, rgba(0,0,0,0.55) 100%);
+    z-index: 2;
+  }
+  /* Hint "desliza ↓" abajo del viewport */
+  .scroll-hint {
+    position: absolute;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(255,248,238,0.92);
+    text-shadow: 0 2px 10px rgba(0,0,0,0.6);
+    white-space: nowrap;
+    pointer-events: none;
+    animation: hintPulse 1.8s ease-in-out infinite;
+    z-index: 3;
+  }
+  @keyframes hintPulse {
+    0%, 100% { opacity: 0.55; transform: translate(-50%, 0); }
+    50%      { opacity: 1;    transform: translate(-50%, 6px); }
+  }
+  .intro-done .scroll-hint { opacity: 0; transition: opacity 0.6s ease; }
+
+  /* Reaparición suave del contenido bajo el video */
+  .page-inner {
     position: relative;
-    z-index: 1;
-    background: rgba(255,255,255,0.08);
+    z-index: 2;
+    background: transparent;
+  }
+  .event-summary {
+    margin-top: 22px;
+  }
+
+  /* ── SKIP INTRO BUTTON ── */
+  .skip-intro {
+    position: fixed;
+    top: 14px;
+    right: 14px;
+    z-index: 50;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 13px;
+    border-radius: 999px;
+    background: rgba(0,0,0,0.35);
+    border: 1px solid rgba(240,180,41,0.45);
+    color: rgba(255,248,238,0.9);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-decoration: none;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.35);
+    cursor: pointer;
+    transition: opacity 0.4s ease, transform 0.2s ease, background 0.2s ease;
+  }
+  .skip-intro:hover {
+    background: rgba(0,0,0,0.55);
+    transform: translateY(-1px);
+  }
+  .intro-done .skip-intro {
+    opacity: 0;
+    pointer-events: none;
   }
 
   /* ── NAME BLOCK ── */
@@ -653,54 +727,48 @@
 <!-- Floating particles -->
 <div class="particles" id="particles"></div>
 
-<!-- BUNTING + LIGHTS -->
+<!-- Skip intro -->
+<a href="#detalles-evento" class="skip-intro" id="skip-intro" aria-label="Saltar a los detalles del evento">
+  Saltar ↓
+</a>
+
+<!-- HERO FULL-BLEED VIDEO (fuera de page-inner para ocupar 100vw) -->
+<div class="hero-stage" id="hero-stage" aria-labelledby="titulo-invitacion">
+  <h1 id="titulo-invitacion" class="sr-only">Cumpleaños de Jackie — Viernes 15 de mayo de 2026</h1>
+  <div class="hero-video-wrap">
+    <video
+      id="intro-video"
+      class="hero-video"
+      src="uploads/intro.mp4"
+      poster="uploads/intro-poster.jpg"
+      muted
+      playsinline
+      webkit-playsinline
+      preload="auto"
+      disablepictureinpicture
+      aria-label="Invitación animada al cumpleaños de Jackie"
+    ></video>
+    <div class="hero-vignette" aria-hidden="true"></div>
+    <span class="scroll-hint" id="scroll-hint" aria-hidden="true">desliza ↓</span>
+  </div>
+</div>
+
+<!-- BODY DE LA INVITACIÓN -->
 <div class="page-inner">
-  <div class="bunting-wrap">
-    <div class="bunting-line"></div>
-    <div class="bunting" id="bunting"></div>
-    <div class="lights" id="lights"></div>
+
+  <!-- Resumen del evento (chips) -->
+  <div class="event-summary" aria-label="Resumen del evento">
+    <span class="summary-chip">📅 Viernes 15 de mayo</span>
+    <span class="summary-chip">🕖 7:00 p.m.</span>
+    <span class="summary-chip">📍 Zona 11</span>
   </div>
 
-  <!-- Invite label -->
-  <p class="invite-label">¡Estás invitado!</p>
-
-  <!-- HERO -->
-  <main class="hero" aria-labelledby="titulo-invitacion">
-    <span class="hero-decor hero-decor-left" aria-hidden="true"></span>
-    <span class="hero-decor hero-decor-right" aria-hidden="true"></span>
-
-    <!-- Photo -->
-    <div class="photo-frame">
-      <div class="photo-glow"></div>
-      <img src="uploads/photo-1777500927883.png" alt="Jackie">
-    </div>
-
-    <!-- Name -->
-    <div class="name-block">
-      <h1 id="titulo-invitacion" class="name-main">Jackie</h1>
-      <p class="name-sub">cumple años 🎉</p>
-    </div>
-
-    <!-- Ribbon -->
-    <div class="ribbon-wrap">
-      <div class="ribbon">
-        <p>y deseamos celebrar la vida…</p>
-        <p><strong>¡Acompáñanos!</strong></p>
-      </div>
-    </div>
-
-    <div class="event-summary" aria-label="Resumen del evento">
-      <span class="summary-chip">📅 Viernes 15 de mayo</span>
-      <span class="summary-chip">🕖 7:00 p.m.</span>
-      <span class="summary-chip">📍 Zona 11</span>
-    </div>
-
-    <div class="celebration-accent" aria-hidden="true">
-      <span class="accent-flower accent-flower-left"></span>
-      <span class="music-badge">♪</span>
-      <span class="accent-flower accent-flower-right"></span>
-    </div>
-  </main><!-- /hero -->
+  <!-- Acento decorativo -->
+  <div class="celebration-accent" aria-hidden="true">
+    <span class="accent-flower accent-flower-left"></span>
+    <span class="music-badge">♪</span>
+    <span class="accent-flower accent-flower-right"></span>
+  </div>
 
   <!-- DIVIDER -->
   <div class="divider">🌺 🌸 🌺</div>
@@ -809,27 +877,31 @@
 </div><!-- /page-inner -->
 
 <script>
-// ── BUNTING FLAGS ──
-const flagColors = ['#E8472A','#F0B429','#25A244','#9B59B6','#E84772','#2980B9','#E8472A','#F0B429','#25A244'];
+// ── BUNTING FLAGS (opcional, sólo si existen los nodos) ──
 const bunting = document.getElementById('bunting');
-flagColors.forEach(c => {
-  const d = document.createElement('div');
-  d.className = 'flag';
-  d.style.borderTopColor = c;
-  bunting.appendChild(d);
-});
+if (bunting) {
+  const flagColors = ['#E8472A','#F0B429','#25A244','#9B59B6','#E84772','#2980B9','#E8472A','#F0B429','#25A244'];
+  flagColors.forEach(c => {
+    const d = document.createElement('div');
+    d.className = 'flag';
+    d.style.borderTopColor = c;
+    bunting.appendChild(d);
+  });
+}
 
-// ── LIGHTS ──
-const bulbColors = ['#FFE566','#FF6B6B','#6BFFA0','#66B2FF','#FF6BFF','#FFE566','#FF6B6B','#6BFFA0','#66B2FF'];
+// ── LIGHTS (opcional) ──
 const lights = document.getElementById('lights');
-bulbColors.forEach((c, i) => {
-  const b = document.createElement('div');
-  b.className = 'bulb';
-  b.style.color = c;
-  b.style.backgroundColor = c;
-  b.style.animationDelay = (i * 0.22) + 's';
-  lights.appendChild(b);
-});
+if (lights) {
+  const bulbColors = ['#FFE566','#FF6B6B','#6BFFA0','#66B2FF','#FF6BFF','#FFE566','#FF6B6B','#6BFFA0','#66B2FF'];
+  bulbColors.forEach((c, i) => {
+    const b = document.createElement('div');
+    b.className = 'bulb';
+    b.style.color = c;
+    b.style.backgroundColor = c;
+    b.style.animationDelay = (i * 0.22) + 's';
+    lights.appendChild(b);
+  });
+}
 
 // ── FLOATING PARTICLES ──
 const container = document.getElementById('particles');
@@ -861,6 +933,121 @@ function spawnParticle() {
 // Spawn particles
 for (let i = 0; i < 18; i++) spawnParticle();
 setInterval(spawnParticle, 800);
+
+// ── SCROLL-DRIVEN VIDEO SCRUB ──
+(function () {
+  const video = document.getElementById('intro-video');
+  const stage = document.getElementById('hero-stage');
+  const skipBtn = document.getElementById('skip-intro');
+  if (!video || !stage) return;
+
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const isMobile = window.matchMedia('(max-width: 600px)').matches;
+
+  // Quitar sticky cuando NO usamos scrub (móvil o reduced-motion)
+  function disableStickyStage() {
+    stage.style.minHeight = '100vh';
+    const wrap = stage.querySelector('.hero-video-wrap');
+    if (wrap) wrap.style.position = 'relative';
+    document.body.classList.add('intro-done');
+  }
+
+  // Reduced motion: NO autoplay, solo el poster estático
+  if (reducedMotion) {
+    disableStickyStage();
+    video.removeAttribute('autoplay');
+    video.pause();
+    return;
+  }
+
+  // Móvil: autoplay loop sin scrub (scrub en móvil es choppy y come batería)
+  if (isMobile) {
+    video.loop = true;
+    video.autoplay = true;
+    video.muted = true;
+    disableStickyStage();
+    const tryPlay = () => video.play().catch(() => {});
+    if (video.readyState >= 2) tryPlay();
+    else video.addEventListener('loadeddata', tryPlay, { once: true });
+    return;
+  }
+
+  // Desktop: scrub controlado por scroll dentro del .hero-stage
+  let duration = 0;
+  let ticking = false;
+  let inView = true;
+  let lastProgress = -1;
+
+  function onMeta() {
+    duration = video.duration || 8;
+    update();
+  }
+  if (video.readyState >= 1) onMeta();
+  else video.addEventListener('loadedmetadata', onMeta, { once: true });
+
+  // Forzar carga
+  try { video.load(); } catch (e) {}
+
+  function update() {
+    if (!duration || !inView) { ticking = false; return; }
+    const rect = stage.getBoundingClientRect();
+    // Progreso 0→1 dentro del stage: 0 cuando el stage está entrando, 1 cuando termina
+    const range = rect.height - window.innerHeight;
+    const scrolled = -rect.top;
+    let progress = range > 0 ? scrolled / range : 0;
+    progress = Math.max(0, Math.min(1, progress));
+
+    if (Math.abs(progress - lastProgress) > 0.001) {
+      lastProgress = progress;
+      const t = progress * duration;
+      // Evitar setear si ya está cerca (reduce stutter)
+      if (Math.abs(video.currentTime - t) > 0.03) {
+        try { video.currentTime = t; } catch (e) {}
+      }
+    }
+
+    if (progress >= 0.999) {
+      document.body.classList.add('intro-done');
+    } else {
+      document.body.classList.remove('intro-done');
+    }
+    ticking = false;
+  }
+
+  function onScroll() {
+    if (!ticking) {
+      ticking = true;
+      requestAnimationFrame(update);
+    }
+  }
+
+  // Solo escuchar scroll cuando el stage está visible (perf)
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { inView = e.isIntersecting; if (inView) onScroll(); });
+  }, { rootMargin: '20% 0px 20% 0px' });
+  io.observe(stage);
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll, { passive: true });
+
+  // Asegurar que arranque en frame 0 y que esté pausado (scrub manual)
+  video.pause();
+  // Trigger inicial
+  requestAnimationFrame(update);
+
+  // Skip button: scroll suave hasta los detalles
+  if (skipBtn) {
+    skipBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const target = document.getElementById('detalles-evento');
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else {
+        window.scrollTo({ top: stage.offsetTop + stage.offsetHeight, behavior: 'smooth' });
+      }
+    });
+  }
+})();
 </script>
 </body>
 </html>
