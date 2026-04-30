@@ -187,29 +187,27 @@
       radial-gradient(ellipse at 16% 50%, #FF6B9D 0 16%, transparent 17%);
   }
 
-  /* ── HERO STAGE FULL-BLEED ── */
+  /* ── HERO FULL-BLEED CON AUTOPLAY ── */
   .hero-stage {
     position: relative;
     width: 100%;
-    /* Espacio de scroll extra para que el video pueda scrubear */
-    min-height: 200vh;
+    height: 100vh;
+    height: 100svh; /* iOS Safari friendly */
+    overflow: hidden;
     background: #000;
     z-index: 1;
   }
   .hero-video-wrap {
-    position: sticky;
-    top: 0;
+    position: relative;
     width: 100%;
-    height: 100vh;
-    /* Altura dinámica para iOS Safari (evita el "bouncing" con barra del browser) */
-    height: 100svh;
+    height: 100%;
     overflow: hidden;
     background: #000;
   }
   .hero-video {
     width: 100%;
     height: 100%;
-    object-fit: cover;        /* corta los lados en mobile portrait */
+    object-fit: cover;
     object-position: center center;
     display: block;
     pointer-events: none;
@@ -934,106 +932,48 @@ function spawnParticle() {
 for (let i = 0; i < 18; i++) spawnParticle();
 setInterval(spawnParticle, 800);
 
-// ── SCROLL-DRIVEN VIDEO SCRUB ──
+// ── HERO VIDEO AUTOPLAY (con swap de fuente según viewport) ──
 (function () {
   const video = document.getElementById('intro-video');
-  const stage = document.getElementById('hero-stage');
   const skipBtn = document.getElementById('skip-intro');
-  if (!video || !stage) return;
+  if (!video) return;
 
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const isMobile = window.matchMedia('(max-width: 600px)').matches;
+  const isMobile = window.matchMedia('(max-width: 600px)').matches
+    || /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
-  // Quitar sticky cuando NO usamos scrub (móvil o reduced-motion)
-  function disableStickyStage() {
-    stage.style.minHeight = '100vh';
-    const wrap = stage.querySelector('.hero-video-wrap');
-    if (wrap) wrap.style.position = 'relative';
-    document.body.classList.add('intro-done');
+  // En mobile: usar la versión cropeada vertical (más enfocada en Jackie, sin cortinas)
+  if (isMobile) {
+    video.setAttribute('src', 'uploads/intro-mobile.mp4');
+    video.setAttribute('poster', 'uploads/intro-mobile-poster.jpg');
   }
 
-  // Reduced motion: NO autoplay, solo el poster estático
   if (reducedMotion) {
-    disableStickyStage();
+    // Solo poster estático, sin autoplay
     video.removeAttribute('autoplay');
     video.pause();
+    document.body.classList.add('intro-done');
     return;
   }
 
-  // Móvil: autoplay loop sin scrub (scrub en móvil es choppy y come batería)
-  if (isMobile) {
-    video.loop = true;
-    video.autoplay = true;
-    video.muted = true;
-    disableStickyStage();
-    const tryPlay = () => video.play().catch(() => {});
-    if (video.readyState >= 2) tryPlay();
-    else video.addEventListener('loadeddata', tryPlay, { once: true });
-    return;
-  }
-
-  // Desktop: scrub controlado por scroll dentro del .hero-stage
-  let duration = 0;
-  let ticking = false;
-  let inView = true;
-  let lastProgress = -1;
-
-  function onMeta() {
-    duration = video.duration || 8;
-    update();
-  }
-  if (video.readyState >= 1) onMeta();
-  else video.addEventListener('loadedmetadata', onMeta, { once: true });
-
-  // Forzar carga
+  // Autoplay loop (desktop y mobile)
+  video.loop = true;
+  video.muted = true;
+  video.playsInline = true;
   try { video.load(); } catch (e) {}
 
-  function update() {
-    if (!duration || !inView) { ticking = false; return; }
-    const rect = stage.getBoundingClientRect();
-    // Progreso 0→1 dentro del stage: 0 cuando el stage está entrando, 1 cuando termina
-    const range = rect.height - window.innerHeight;
-    const scrolled = -rect.top;
-    let progress = range > 0 ? scrolled / range : 0;
-    progress = Math.max(0, Math.min(1, progress));
+  const tryPlay = () => {
+    const p = video.play();
+    if (p && p.catch) p.catch(() => {
+      // Si autoplay falla (raro con muted), reintentar al primer toque
+      const resume = () => { video.play().catch(() => {}); document.removeEventListener('touchstart', resume); document.removeEventListener('click', resume); };
+      document.addEventListener('touchstart', resume, { once: true });
+      document.addEventListener('click', resume, { once: true });
+    });
+  };
 
-    if (Math.abs(progress - lastProgress) > 0.001) {
-      lastProgress = progress;
-      const t = progress * duration;
-      // Evitar setear si ya está cerca (reduce stutter)
-      if (Math.abs(video.currentTime - t) > 0.03) {
-        try { video.currentTime = t; } catch (e) {}
-      }
-    }
-
-    if (progress >= 0.999) {
-      document.body.classList.add('intro-done');
-    } else {
-      document.body.classList.remove('intro-done');
-    }
-    ticking = false;
-  }
-
-  function onScroll() {
-    if (!ticking) {
-      ticking = true;
-      requestAnimationFrame(update);
-    }
-  }
-
-  // Solo escuchar scroll cuando el stage está visible (perf)
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(e => { inView = e.isIntersecting; if (inView) onScroll(); });
-  }, { rootMargin: '20% 0px 20% 0px' });
-  io.observe(stage);
-
-  window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', onScroll, { passive: true });
-
-  // Asegurar que arranque en frame 0 y que esté pausado (scrub manual)
-  video.pause();
-  // Trigger inicial
-  requestAnimationFrame(update);
+  if (video.readyState >= 2) tryPlay();
+  else video.addEventListener('loadeddata', tryPlay, { once: true });
 
   // Skip button: scroll suave hasta los detalles
   if (skipBtn) {
@@ -1043,7 +983,7 @@ setInterval(spawnParticle, 800);
       if (target) {
         target.scrollIntoView({ behavior: 'smooth', block: 'start' });
       } else {
-        window.scrollTo({ top: stage.offsetTop + stage.offsetHeight, behavior: 'smooth' });
+        window.scrollTo({ top: window.innerHeight, behavior: 'smooth' });
       }
     });
   }
