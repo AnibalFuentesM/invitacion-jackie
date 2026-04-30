@@ -737,7 +737,6 @@
     <video
       id="intro-video"
       class="hero-video"
-      src="uploads/intro.mp4"
       poster="uploads/intro-poster.jpg"
       muted
       playsinline
@@ -745,7 +744,19 @@
       preload="auto"
       disablepictureinpicture
       aria-label="Invitación animada al cumpleaños de Jackie"
-    ></video>
+    >
+      <source src="uploads/intro.mp4" type="video/mp4">
+    </video>
+    <script>
+      (function() {
+        var v = document.getElementById('intro-video');
+        var isMob = window.matchMedia('(max-width: 600px)').matches || /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+        if (isMob) {
+          v.src = 'uploads/intro-mobile.mp4';
+          v.poster = 'uploads/intro-mobile-poster.jpg';
+        }
+      })();
+    </script>
     <div class="hero-vignette" aria-hidden="true"></div>
     <span class="scroll-hint" id="scroll-hint" aria-hidden="true">desliza ↓</span>
   </div>
@@ -939,14 +950,7 @@ setInterval(spawnParticle, 800);
   if (!video) return;
 
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const isMobile = window.matchMedia('(max-width: 600px)').matches
-    || /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-
-  // En mobile: usar la versión cropeada vertical (más enfocada en Jackie, sin cortinas)
-  if (isMobile) {
-    video.setAttribute('src', 'uploads/intro-mobile.mp4');
-    video.setAttribute('poster', 'uploads/intro-mobile-poster.jpg');
-  }
+  // El cambio de src ya se manejó arriba para mayor rapidez
 
   if (reducedMotion) {
     // Solo poster estático, sin autoplay
@@ -956,11 +960,21 @@ setInterval(spawnParticle, 800);
     return;
   }
 
-  // Autoplay loop (desktop y mobile)
-  video.loop = true;
+  // Autoplay una sola vez — al terminar se queda detenido en el último frame
+  video.loop = false;
   video.muted = true;
   video.playsInline = true;
   try { video.load(); } catch (e) {}
+
+  // Garantizar que al terminar se quede en el último frame (algunos browsers
+  // resetean a 0 si no se hace explícito)
+  video.addEventListener('ended', () => {
+    try {
+      const last = Math.max(0, (video.duration || 8) - 0.05);
+      video.currentTime = last;
+      video.pause();
+    } catch (e) {}
+  });
 
   const tryPlay = () => {
     const p = video.play();
